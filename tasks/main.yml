@@ -14,3 +14,6 @@
 - name: ensure network is restarted
   shell: ifdown -a && ifup -a
   when: resolv_content.changed
+
+- name: ensure dnsmasq starts on a fresh boot
+  service: name=dnsmasq state=started enabled=yes
