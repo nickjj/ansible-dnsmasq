@@ -1,0 +1,16 @@
+---
+- name: ensure dnsmasq is installed
+  apt: pkg=dnsmasq state=latest update_cache=true cache_valid_time={{ apt_cache_valid_time }}
+
+- name: ensure dnsmasq is configured
+  template: src=devtld.conf.j2 dest=/etc/dnsmasq.d/devtld.conf
+  notify:
+    - restart dnsmasq
+
+- name: ensure resolv is configured
+  copy: src=resolv.conf dest=/etc/resolvconf/resolv.conf.d/base
+  register: resolv_content
+
+- name: ensure network is restarted
+  shell: ifdown -a && ifup -a
+  when: resolv_content.changed
