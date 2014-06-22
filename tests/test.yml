@@ -4,4 +4,4 @@
   sudo: true
 
   roles:
-    - nickjj.dnsmasq
+    - ansible-dnsmasq
