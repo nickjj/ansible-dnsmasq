@@ -3,7 +3,7 @@ language: "python"
 python: "2.7"
 
 env:
-  - SITE="test.yml"
+  - SITE_AND_INVENTORY="tests/test.yml -i tests/inventory"
 
 before_install:
   - "sudo apt-get update -qq"
@@ -13,10 +13,10 @@ install:
   - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
 
 script:
-  - "ansible-playbook tests/$SITE -i tests/inventory --syntax-check"
-  - "ansible-playbook tests/$SITE -i tests/inventory --connection=local -vvvv"
+  - "ansible-playbook $SITE_AND_INVENTORY --syntax-check"
+  - "ansible-playbook $SITE_AND_INVENTORY --connection=local -vvvv"
   - >
-    ansible-playbook tests/$SITE -i tests/inventory --connection=local
+    ansible-playbook $SITE_AND_INVENTORY --connection=local
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
