@@ -1,6 +1,7 @@
 ---
 - hosts: localhost
-  remote_user: root
+  remote_user: travis
+  sudo: true
 
   roles:
     - ansible-dnsmasq
