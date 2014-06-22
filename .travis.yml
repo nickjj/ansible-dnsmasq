@@ -1,0 +1,26 @@
+---
+language: "python"
+python: "2.7"
+
+env:
+  - SITE="tests/test.yml"
+  - INVENTORY="tests/inventory"
+  - ANSIBLE_FLAGS="$SITE -i $INVENTORY"
+
+before_install:
+  - "sudo apt-get update -qq"
+
+install:
+  - "pip install ansible==1.6.2"
+  - "printf '[defaults]\nroles_path = ../' > ansible.cfg"
+
+script:
+  - "ansible-playbook $ANSIBLE_FLAGS --syntax-check"
+  - "ansible-playbook $ANSIBLE_FLAGS --connection=local -vvvv"
+  - >
+    ansible-playbook $ANSIBLE_FLAGS --connection=local
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
+
+  - "ping -c 1 foo.dev"

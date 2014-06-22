@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/nickjj/ansible-dnsmasq.png)](http://travis-ci.org/nickjj/ansible-dnsmasq)
+
 ## What is ansible-dnsmasq?
 
 It is an [ansible](http://www.ansible.com/home) role to install dnsmasq and configure it so that you can map a TLD to localhost.
